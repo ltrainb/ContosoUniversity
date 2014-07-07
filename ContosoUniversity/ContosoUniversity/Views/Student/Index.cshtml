@@ -12,17 +12,16 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.LastName)
+            @Html.ActionLink("LAst Name", "Index", new { sortOrder=ViewBag.NameSortParm})
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.FirstName)
+            First Name
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.EnrollmentDate)
+            @Html.ActionLink("Enrollment Date", "Index", new { sortOrder = ViewBag.DateSortParm })
         </th>
         <th></th>
-    </tr>
-
+        </tr>
 @foreach (var item in Model) {
     <tr>
         <td>
