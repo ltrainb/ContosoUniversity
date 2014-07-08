@@ -18,7 +18,7 @@ namespace ContosoUniversity.Migrations
         {
             var students = new List<Student>
             {
-                new Student { FirstName= "Carson", LastName="Alexznader", EnrollmentDate=DateTime.Parse("2010-09-01")},
+                new Student { FirstName= "Carson", LastName="Alexander", EnrollmentDate=DateTime.Parse("2010-09-01")},
                 new Student{  FirstName= "Meredith", LastName="Alonso", EnrollmentDate=DateTime.Parse("2012-09-01")},
                 new Student{ FirstName="Arturo", LastName="Anand", EnrollmentDate=DateTime.Parse("2013-09-01")},
                 new Student{ FirstName= "Gytis", LastName="Barzdukas", EnrollmentDate=DateTime.Parse("2012-09-01")},
@@ -46,7 +46,7 @@ namespace ContosoUniversity.Migrations
             var enrollments=new List<Enrollment>
             {
                 new Enrollment{ StudentID=students.Single(s => s.LastName=="Alexander").ID, CourseID =courses.Single(c => c.Title== "Chemistry" ).CourseID, Grade=Grade.A},
-                new Enrollment{ StudentID= students.Single(s => s.LastName== "Alexander" ).ID, CourseID=courses.Single(c => c.Title=="Microeconomice").CourseID, Grade=Grade.C},
+                new Enrollment{ StudentID= students.Single(s => s.LastName== "Alexander" ).ID, CourseID=courses.Single(c => c.Title=="Microeconomics").CourseID, Grade=Grade.C},
                 new Enrollment{ StudentID=students.Single(s => s.LastName=="Alexander" ).ID, CourseID=courses.Single(c => c.Title=="Macroeconomics").CourseID, Grade=Grade.B},
                 new Enrollment{ StudentID=students.Single(s => s.LastName=="Alonso").ID, CourseID=courses.Single(c => c.Title=="Calculus").CourseID, Grade=Grade.B},
                 new Enrollment{ StudentID= students.Single(s => s.LastName=="Alonso").ID,CourseID=courses.Single(c => c.Title=="Trigonmetry").CourseID, Grade=Grade.B},
@@ -54,7 +54,7 @@ namespace ContosoUniversity.Migrations
                 new Enrollment{ StudentID=students.Single(s => s.LastName=="Anand").ID,CourseID=courses.Single(c => c.Title=="Microeconomics").CourseID, Grade=Grade.B},
                 new Enrollment{ StudentID=students.Single(s => s.LastName=="Barzdukas").ID,CourseID=courses.Single(c => c.Title=="Chemistry").CourseID,Grade=Grade.B},
                 new Enrollment{ StudentID=students.Single(s => s.LastName=="Li").ID,CourseID=courses.Single(c => c.Title=="Composition").CourseID,Grade=Grade.B},
-                new Enrollment{ StudentID=students.Single(s => s.LastName=="Jusitce").ID,CourseID=courses.Single(c => c.Title=="Literature").CourseID,Grade=Grade.B}
+                new Enrollment{ StudentID=students.Single(s => s.LastName=="Justice").ID,CourseID=courses.Single(c => c.Title=="Literature").CourseID,Grade=Grade.B}
             };
             foreach (Enrollment e in enrollments)
             {
@@ -63,8 +63,8 @@ namespace ContosoUniversity.Migrations
                 {
                     context.Enrollments.Add(e);
                 }
-                context.SaveChanges();
             }
+            context.SaveChanges();
         }
     }
 }
