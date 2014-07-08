@@ -1,6 +1,6 @@
 namespace ContosoUniversity.Migrations
 {
-    using ContosoUniversity.Models
+    using ContosoUniversity.Models;
     using System;
     using System.Collections.Generic;
     using System.Data.Entity;
@@ -45,7 +45,25 @@ namespace ContosoUniversity.Migrations
 
             var enrollments=new List<Enrollment>
             {
-                new Enrollment{ StudentID=students.Single(s => s.LastName=="Alexander").ID,}
+                new Enrollment{ StudentID=students.Single(s => s.LastName=="Alexander").ID, CourseID =courses.Single(c => c.Title== "Chemistry" ).CourseID, Grade=Grade.A},
+                new Enrollment{ StudentID= students.Single(s => s.LastName== "Alexander" ).ID, CourseID=courses.Single(c => c.Title=="Microeconomice").CourseID, Grade=Grade.C},
+                new Enrollment{ StudentID=students.Single(s => s.LastName=="Alexander" ).ID, CourseID=courses.Single(c => c.Title=="Macroeconomics").CourseID, Grade=Grade.B},
+                new Enrollment{ StudentID=students.Single(s => s.LastName=="Alonso").ID, CourseID=courses.Single(c => c.Title=="Calculus").CourseID, Grade=Grade.B},
+                new Enrollment{ StudentID= students.Single(s => s.LastName=="Alonso").ID,CourseID=courses.Single(c => c.Title=="Trigonmetry").CourseID, Grade=Grade.B},
+                new Enrollment{ StudentID=students.Single(s => s.LastName=="Alonso").ID,CourseID=courses.Single(c => c.Title=="Composition").CourseID, Grade=Grade.B},
+                new Enrollment{ StudentID=students.Single(s => s.LastName=="Anand").ID,CourseID=courses.Single(c => c.Title=="Microeconomics").CourseID, Grade=Grade.B},
+                new Enrollment{ StudentID=students.Single(s => s.LastName=="Barzdukas").ID,CourseID=courses.Single(c => c.Title=="Chemistry").CourseID,Grade=Grade.B},
+                new Enrollment{ StudentID=students.Single(s => s.LastName=="Li").ID,CourseID=courses.Single(c => c.Title=="Composition").CourseID,Grade=Grade.B},
+                new Enrollment{ StudentID=students.Single(s => s.LastName=="Jusitce").ID,CourseID=courses.Single(c => c.Title=="Literature").CourseID,Grade=Grade.B}
+            };
+            foreach (Enrollment e in enrollments)
+            {
+                var enrollmentInDataBase=context.Enrollments.Where(s => s.Student.ID==e.StudentID && s.Course.CourseID== e.CourseID).SingleOrDefault();
+                if (enrollmentInDataBase==null)
+                {
+                    context.Enrollments.Add(e);
+                }
+                context.SaveChanges();
             }
         }
     }
