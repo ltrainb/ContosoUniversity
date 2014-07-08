@@ -6,7 +6,7 @@ namespace ContosoUniversity.Logging
 {
     public class Logger : ILogger
     {
-        public void Information(strint message)
+        public void Information(string message)
         {
             Trace.TraceInformation(message);
         }
@@ -28,7 +28,7 @@ namespace ContosoUniversity.Logging
         }
         public void Warning(Exception exception, string fmt, params object[] vars)
         {
-            Trace.TraceWarning(FormatExceptionMessage(exception, fmt, vars);
+            Trace.TraceWarning(FormatExceptionMessage(exception, fmt, vars));
         }
         public void Error(string message)
         {
