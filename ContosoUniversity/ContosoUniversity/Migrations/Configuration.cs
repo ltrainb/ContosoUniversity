@@ -44,10 +44,10 @@ namespace ContosoUniversity.Migrations
 
             var departments = new List<Department>
             {
-                new Department{Name="English", Budget=350000, StartDate=DateTime.Parse("2007-09-01"), InstructorID=instructors.Single(i => i.LastName="Abercrombie").ID },
-                new Department{Name="Mathematics", Budget=100000, StartDate=DateTime.Parse("2007-09-01"), InstructorID=instructors.Single(i => i.LastName="Fakhouri").ID},
-                new Department{Name="Engineering", Budget=350000, StartDate=DateTime.Parse("2007-09-01"), InstructorID=instructors.Single(i => i.LastName="Harui").ID},
-                new Department{Name="Economics", Budget=100000, StartDate=DateTime.Parse("2007-09-01"), InstructorID=instructors.Single(i => i.LastName="Kapoor").ID}
+                new Department{Name="English", Budget=350000, StartDate=DateTime.Parse("2007-09-01"), InstructorID=instructors.Single(i => i.LastName=="Abercrombie").ID },
+                new Department{Name="Mathematics", Budget=100000, StartDate=DateTime.Parse("2007-09-01"), InstructorID=instructors.Single(i => i.LastName=="Fakhouri").ID},
+                new Department{Name="Engineering", Budget=350000, StartDate=DateTime.Parse("2007-09-01"), InstructorID=instructors.Single(i => i.LastName=="Harui").ID},
+                new Department{Name="Economics", Budget=100000, StartDate=DateTime.Parse("2007-09-01"), InstructorID=instructors.Single(i => i.LastName=="Kapoor").ID}
             };
             departments.ForEach(s => context.Departments.AddOrUpdate(p => p.Name, s));
             context.SaveChanges();
@@ -78,7 +78,7 @@ namespace ContosoUniversity.Migrations
              AddOrUpdateInstructor(context, "Chemistry", "Harui");
              AddOrUpdateInstructor(context, "Microeconomics", "Zheng");
              AddOrUpdateInstructor(context, "Macroeconomics", "Zheng");
-             AddOrUpdateInstructor(context, "Calculus", "Kakhouri");
+             AddOrUpdateInstructor(context, "Calculus", "Fakhouri");
              AddOrUpdateInstructor(context, "Trigonmetry", "Harui");
              AddOrUpdateInstructor(context, "Composition", "Abercrombie");
              AddOrUpdateInstructor(context, "Literature", "Abercrombie");
