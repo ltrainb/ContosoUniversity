@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity.Infrastructure;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -40,7 +41,7 @@ namespace ContosoUniversity.Controllers
         // GET: Courses/Create
         public ActionResult Create()
         {
-            ViewBag.DepartmentID = new SelectList(db.Departments, "DepartmentID", "Name");
+            PopulateDepartmentDropDownList();
             return View();
         }
 
@@ -51,14 +52,21 @@ namespace ContosoUniversity.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "CourseID,Title,Credits,DepartmentID")] Course course)
         {
-            if (ModelState.IsValid)
+            try
             {
-                db.Courses.Add(course);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.Courses.Add(course);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
-
-            ViewBag.DepartmentID = new SelectList(db.Departments, "DepartmentID", "Name", course.DepartmentID);
+            catch (RetryLimitExceededException /* dex */)
+            {
+                //log error
+                ModelState.AddModelError(" ", "Unable to save changes. tyr again...blah blah blah");
+            }
+            PopulateDepartmentDropDownList(course.DepartmentID);
             return View(course);
         }
 
@@ -74,7 +82,7 @@ namespace ContosoUniversity.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.DepartmentID = new SelectList(db.Departments, "DepartmentID", "Name", course.DepartmentID);
+            PopulateDepartmentDropDownList(course.DepartmentID);
             return View(course);
         }
 
@@ -85,14 +93,30 @@ namespace ContosoUniversity.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "CourseID,Title,Credits,DepartmentID")] Course course)
         {
-            if (ModelState.IsValid)
+            try
             {
-                db.Entry(course).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.Entry(course).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
-            ViewBag.DepartmentID = new SelectList(db.Departments, "DepartmentID", "Name", course.DepartmentID);
+            catch
+            {
+                //log error
+                ModelState.AddModelError(" ", "Unable to save changes. try again if erro persist blah blah blah");
+            }
+            PopulateDepartmentDropDownList(course.DepartmentID);
             return View(course);
+        }
+
+        private void PopulateDepartmentDropDownList(object selectedDepartment=null)
+        {
+            var departmentQuery = from d in db.Departments
+                                  orderby d.Name
+                                  select d;
+            ViewBag.DepartmentID = new SelectList(departmentQuery, "DepartmentID", "Name", selectedDepartment);
         }
 
         // GET: Courses/Delete/5
