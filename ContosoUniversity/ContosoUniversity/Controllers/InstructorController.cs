@@ -21,7 +21,7 @@ namespace ContosoUniversity.Controllers
         public ActionResult Index(int? id, int? courseID)
         {
             var viewModel = new InstructorIndexData();
-            viewModel.Instructors = db.Instructors.Include(i => i.OfflceAssignment).Include(i => i.Courses.Select(c => c.Department)).OrderBy(i => i.LastName);
+            viewModel.Instructors = db.Instructors.Include(i => i.OfficeAssignment).Include(i => i.Courses.Select(c => c.Department)).OrderBy(i => i.LastName);
 
             if (id != null)
             {
@@ -83,7 +83,7 @@ namespace ContosoUniversity.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Instructor instructor = db.Instructors.Include(i => i.OfflceAssignment).Where(i => i.ID == id).Single();
+            Instructor instructor = db.Instructors.Include(i => i.OfficeAssignment).Where(i => i.ID == id).Single();
             if (instructor == null)
             {
                 return HttpNotFound();
@@ -102,15 +102,15 @@ namespace ContosoUniversity.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var instructorToUpdate = db.Instructors.Include(i => i.OfflceAssignment).Where(i => i.ID == id).Single();
+            var instructorToUpdate = db.Instructors.Include(i => i.OfficeAssignment).Where(i => i.ID == id).Single();
 
             if(TryUpdateModel(instructorToUpdate, "", new string[] { "LastName", "FirstName", "HireDate", "OfficeAssignment"}))
             {
                 try
                 {
-                    if(String.IsNullOrWhiteSpace(instructorToUpdate.OfflceAssignment.Location))
+                    if(String.IsNullOrWhiteSpace(instructorToUpdate.OfficeAssignment.Location))
                     {
-                        instructorToUpdate.OfflceAssignment = null;
+                        instructorToUpdate.OfficeAssignment = null;
                     }
                     db.Entry(instructorToUpdate).State = EntityState.Modified;
                     db.SaveChanges();
