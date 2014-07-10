@@ -1,10 +1,10 @@
 ﻿@model ContosoUniversity.Models.Course
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Department";
 }
 
-<h2>Details</h2>
+<h2>Department</h2>
 
 <div>
     <h4>Course</h4>
@@ -15,11 +15,11 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Department.Name)
+            @Html.DisplayFor(model => model.CourseID)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Title)
+            @Html.DisplayNameFor(model => model.CourseID)
         </dt>
 
         <dd>

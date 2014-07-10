@@ -9,10 +9,11 @@ using System.Web.Mvc;
 using ContosoUniversity.DAL;
 using ContosoUniversity.Models;
 using ContosoUniversity.ViewModels;
+using System.Data.Entity.Infrastructure;
 
 namespace ContosoUniversity.Controllers
 {
-    public class InstructorsController : Controller
+    public class InstructorController : Controller
     {
         private SchoolContext db = new SchoolContext();
 
@@ -82,30 +83,47 @@ namespace ContosoUniversity.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Instructor instructor = db.Instructors.Find(id);
+            Instructor instructor = db.Instructors.Include(i => i.OfflceAssignment).Where(i => i.ID == id).Single();
             if (instructor == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.ID = new SelectList(db.OfficeAssignments, "InstructorID", "Location", instructor.ID);
             return View(instructor);
         }
 
         // POST: Instructors/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,LastName,FirstName,HireDate")] Instructor instructor)
+        public ActionResult EditPost(int? id)
         {
-            if (ModelState.IsValid)
+            if (id==null)
             {
-                db.Entry(instructor).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ViewBag.ID = new SelectList(db.OfficeAssignments, "InstructorID", "Location", instructor.ID);
-            return View(instructor);
+            var instructorToUpdate = db.Instructors.Include(i => i.OfflceAssignment).Where(i => i.ID == id).Single();
+
+            if(TryUpdateModel(instructorToUpdate, "", new string[] { "LastName", "FirstName", "HireDate", "OfficeAssignment"}))
+            {
+                try
+                {
+                    if(String.IsNullOrWhiteSpace(instructorToUpdate.OfflceAssignment.Location))
+                    {
+                        instructorToUpdate.OfflceAssignment = null;
+                    }
+                    db.Entry(instructorToUpdate).State = EntityState.Modified;
+                    db.SaveChanges();
+
+                    return RedirectToAction("Index");
+                }
+                catch (RetryLimitExceededException /* dex */)
+                {
+                    //log error
+                    ModelState.AddModelError(" ", "Unable to save changes. try again");
+                }
+            }
+            return View(instructorToUpdate);
         }
 
         // GET: Instructors/Delete/5

@@ -12,7 +12,7 @@ using ContosoUniversity.Models;
 
 namespace ContosoUniversity.Controllers
 {
-    public class CoursesController : Controller
+    public class CourseController : Controller
     {
         private SchoolContext db = new SchoolContext();
 
